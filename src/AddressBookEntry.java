@@ -1,6 +1,6 @@
 import java.io.Serializable;
 
-public class AddressBookEntry implements  Serializable {
+public class AddressBookEntry implements Serializable {
 
     private String firstName, lastName;
     private String address, city, state, phoneNo;
@@ -15,12 +15,12 @@ public class AddressBookEntry implements  Serializable {
         public Builder(){}
 
         public Builder firstName(String firstName){
-            this.firstName = firstName;
+            this.firstName = (firstName == null) ? "" : firstName.toLowerCase();
             return this;
         }
 
         public Builder lastName(String lastName){
-            this.lastName = lastName.toLowerCase();
+            this.lastName = (lastName == null) ? "" : lastName.toLowerCase();
             return this;
 
         }
@@ -84,21 +84,13 @@ public class AddressBookEntry implements  Serializable {
 
     public int getZipCode() { return zipCode; }
 
-    public String getAddress() {
-        return address;
-    }
+    public String getAddress() { return address; }
 
-    public String getCity() {
-        return city;
-    }
+    public String getCity() { return city; }
 
-    public String getState() {
-        return state;
-    }
+    public String getState() { return state; }
 
-    public String getPhoneNo() {
-        return phoneNo;
-    }
+    public String getPhoneNo() { return phoneNo; }
 
     public void editAddress(String address){ this.address = address; }
 
@@ -110,7 +102,8 @@ public class AddressBookEntry implements  Serializable {
 
     @Override
     public String toString() {
-        return "Name: " + this.firstName + " " + this.lastName + "\n"
-                + "Zip Code: " + this.zipCode + "\n";
+        return  this.firstName + " " + this.lastName + "\n"
+                + address + "\n" + city + ", " + state +  " " + zipCode;
     }
+
 }
