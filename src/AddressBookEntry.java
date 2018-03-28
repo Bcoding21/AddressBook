@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class AddressBookEntry implements Comparable<AddressBookEntry> {
+public class AddressBookEntry implements Comparable<AddressBookEntry>, Serializable {
 
     private String firstName, lastName;
     private String address, city, state, phoneNo;
@@ -82,6 +83,22 @@ public class AddressBookEntry implements Comparable<AddressBookEntry> {
     public String getLastName () { return lastName; }
 
     public int getZipCode() { return zipCode; }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getPhoneNo() {
+        return phoneNo;
+    }
 
     public void editAddress(String address){ this.address = address; }
 

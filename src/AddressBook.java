@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.*;
 
-public class AddressBook  {
+public class AddressBook implements Serializable {
 
     private Set<AddressBookEntry> entries;
 
@@ -17,8 +18,15 @@ public class AddressBook  {
     }
 
     public void sortByZip () {
-        Set<AddressBookEntry> zipSortedEntries = new TreeSet<>(Comparator.comparingInt(AddressBookEntry::getZipCode)
-        .thenComparing(AddressBookEntry::getLastName).thenComparing(AddressBookEntry::getFirstName));
+        
+        Set<AddressBookEntry> zipSortedEntries = new TreeSet<>(Comparator
+                .comparingInt(AddressBookEntry::getZipCode)
+                .thenComparing(AddressBookEntry::getLastName)
+                .thenComparing(AddressBookEntry::getFirstName)
+                .thenComparing(AddressBookEntry::getAddress)
+                .thenComparing(AddressBookEntry::getCity)
+                .thenComparing(AddressBookEntry::getPhoneNo));
+
         zipSortedEntries.addAll(entries);
         entries = zipSortedEntries;
     }
