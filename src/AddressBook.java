@@ -18,7 +18,7 @@ public class AddressBook implements Serializable {
     }
 
     public void sortByZip () {
-        
+
         Set<AddressBookEntry> zipSortedEntries = new TreeSet<>(Comparator
                 .comparingInt(AddressBookEntry::getZipCode)
                 .thenComparing(AddressBookEntry::getLastName)
@@ -32,8 +32,14 @@ public class AddressBook implements Serializable {
     }
 
     public void sortByLastName(){
-        Set<AddressBookEntry> nameSortedEntries = new TreeSet<>(Comparator.comparing(AddressBookEntry::getLastName)
-        .thenComparing(AddressBookEntry::getFirstName));
+        Set<AddressBookEntry> nameSortedEntries = new TreeSet<>(Comparator
+                .comparing(AddressBookEntry::getLastName)
+                .thenComparing(AddressBookEntry::getFirstName)
+                .thenComparing(AddressBookEntry::getAddress)
+                .thenComparing(AddressBookEntry::getCity)
+                .thenComparing(AddressBookEntry::getPhoneNo)
+                .thenComparing(AddressBookEntry::getZipCode));
+
         nameSortedEntries.addAll(entries);
         entries = nameSortedEntries;
     }

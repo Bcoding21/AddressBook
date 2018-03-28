@@ -1,6 +1,6 @@
 import java.io.Serializable;
 
-public class AddressBookEntry implements Comparable<AddressBookEntry>, Serializable {
+public class AddressBookEntry implements  Serializable {
 
     private String firstName, lastName;
     private String address, city, state, phoneNo;
@@ -113,11 +113,4 @@ public class AddressBookEntry implements Comparable<AddressBookEntry>, Serializa
         return "Name: " + this.firstName + " " + this.lastName + "\n"
                 + "Zip Code: " + this.zipCode + "\n";
     }
-
-    @Override
-    public int compareTo(AddressBookEntry o) {
-        String fullName = lastName + firstName;
-        return fullName.compareTo(o.lastName + o.firstName);
-    }
-
 }
