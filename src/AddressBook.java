@@ -4,12 +4,18 @@ import java.util.*;
 public class AddressBook implements Serializable {
 
     private String bookName;
+    private String filePath;
     private Set<Entry> entries;
 
     public AddressBook(){
-        bookName = "AddressBook";
+        bookName = "";
+        filePath = "";
         entries = new TreeSet<>(new Entry.lastNameComparator());
     }
+
+    public String getFilePath() { return filePath; }
+
+    public void setFilePath(String filePath) { this.filePath = filePath; }
 
     public AddressBook(AddressBook addressBook){
         entries = addressBook.entries;
