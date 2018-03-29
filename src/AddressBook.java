@@ -3,63 +3,45 @@ import java.util.*;
 
 public class AddressBook implements Serializable {
 
-    private Set<AddressBookEntry> entries;
+    private String bookName;
+    private Set<Entry> entries;
 
-    public AddressBook(){ entries = new TreeSet<>(Comparator
-            .comparing(AddressBookEntry::getLastName)
-            .thenComparing(AddressBookEntry::getFirstName)
-            .thenComparing(AddressBookEntry::getAddress)
-            .thenComparing(AddressBookEntry::getCity)
-            .thenComparing(AddressBookEntry::getPhoneNo)
-            .thenComparing(AddressBookEntry::getZipCode));
+    public AddressBook(){
+        bookName = "AddressBook";
+        entries = new TreeSet<>(new Entry.NameComparator());
     }
 
     public AddressBook(AddressBook addressBook){
         entries = addressBook.entries;
     }
 
-    public void add(AddressBookEntry person){ entries.add(person); }
+    public void setBookName(String name){ bookName = name; }
+
+    public void add(Entry entry){
+        if (entry != null){
+            entries.add(entry);
+        }
+    }
 
     public boolean remove(String phoneNumber) {
-        return entries.removeIf((AddressBookEntry entry) -> phoneNumber.equals(entry.getPhoneNo()));
+        return entries.removeIf((Entry entry) ->
+                entry.getContact().getPhoneNumber().compareTo(phoneNumber) == 0);
     }
 
     public void orderByZip () {
-
-        Set<AddressBookEntry> zipSortedEntries = new TreeSet<>(Comparator
-                .comparingInt(AddressBookEntry::getZipCode)
-                .thenComparing(AddressBookEntry::getLastName)
-                .thenComparing(AddressBookEntry::getFirstName)
-                .thenComparing(AddressBookEntry::getAddress)
-                .thenComparing(AddressBookEntry::getCity)
-                .thenComparing(AddressBookEntry::getState)
-                .thenComparing(AddressBookEntry::getPhoneNo));
-
-        zipSortedEntries.addAll(entries);
-        entries = zipSortedEntries;
+        Set<Entry> zipOrdered = new TreeSet<>(new Entry.ZipCodeComparator());
+        zipOrdered.addAll(entries);
+        entries = zipOrdered;
     }
 
     public void orderByLastName(){
-
-        Set<AddressBookEntry> nameSortedEntries = new TreeSet<>(Comparator
-                .comparing(AddressBookEntry::getLastName)
-                .thenComparing(AddressBookEntry::getFirstName)
-                .thenComparing(AddressBookEntry::getAddress)
-                .thenComparing(AddressBookEntry::getCity)
-                .thenComparing(AddressBookEntry::getState)
-                .thenComparing(AddressBookEntry::getPhoneNo)
-                .thenComparing(AddressBookEntry::getZipCode));
-        nameSortedEntries.addAll(entries);
-        entries = nameSortedEntries;
+        Set<Entry> lastNameOrdered = new TreeSet<>(new Entry.NameComparator());
+        lastNameOrdered.addAll(entries);
+        entries = lastNameOrdered;
     }
 
-    public void printAllEntries(){
+    public void printAllEntries() {
 
-        for (AddressBookEntry entry : entries){
-
-            System.out.println(entry.toString());
-            System.out.println();
-
-        }
     }
+
 }

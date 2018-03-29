@@ -41,7 +41,7 @@ public class FileMenu {
         }
     }
 
-    private void saveAs() {
+    public void saveAs() {
         file = new File("newFilePath");
 
         try{
@@ -53,5 +53,7 @@ public class FileMenu {
             e.printStackTrace();
         }
     }
+
+    AddressBook createNew() { return new AddressBook();}
 
 }
