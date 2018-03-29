@@ -1,18 +1,12 @@
 import java.io.Serializable;
-import java.util.Comparator;
 
-public class Contact implements Serializable {
+
+public class ContactData implements Comparable<ContactData>, Serializable {
     private String firstName;
     private String lastName;
     private String phoneNumber;
 
-    public Contact(){
-        firstName = "";
-        lastName = "";
-        phoneNumber = "";
-    }
-
-    public Contact(String first, String last, String number){
+    public ContactData(String first, String last, String number){
         firstName = first.toLowerCase();
         lastName = last.toLowerCase();
         phoneNumber = number;
@@ -34,5 +28,18 @@ public class Contact implements Serializable {
         return phoneNumber;
     }
 
+    @Override
+    public int compareTo(ContactData o) {
+        String f1 = lastName + firstName;
+        String f2 = o.lastName + o.firstName;
+
+        int res = f1.compareTo(f2);
+
+        if (res != 0){
+            return res;
+        }
+
+        return phoneNumber.compareTo(o.phoneNumber);
+    }
 }
 

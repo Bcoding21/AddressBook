@@ -3,71 +3,81 @@ import java.util.Comparator;
 
 public class Entry implements Serializable {
 
-    private Contact contact;
-    private Location location;
+    private ContactData contactData;
+    private AddressData addressData;
 
-    public Entry(Contact contact, Location location) {
-        this.contact = contact;
-        this.location = location;
+    public Entry(ContactData contactData, AddressData addressData) {
+        this.contactData = contactData;
+        this.addressData = addressData;
     }
 
-    public Contact getContact() {
-        return contact;
+    public ContactData getContactData() {
+        return contactData;
     }
 
-    public Location getLocation() {
-        return location;
+    public AddressData getAddressData() {
+        return addressData;
     }
 
     public void changeAddress(String address) {
-        location.setAddress(address.toLowerCase());
+        this.addressData.setStreetAddress(address.toLowerCase());
     }
 
     public void changeCity(String city) {
-        location.setCity(city.toLowerCase());
+        addressData.setCity(city.toLowerCase());
     }
 
     public void changeState(String state) {
-        location.setState(state.toLowerCase());
+        addressData.setState(state.toLowerCase());
     }
 
-    public void changeZipCode(short zipCode) {
-        location.setZipCode(zipCode);
+    public void changeZipCode(int zipCode) {
+        addressData.setZipCode(zipCode);
     }
 
     public void changePhoneNumber(String phoneNumber) {
-        contact.setPhoneNumber(phoneNumber);
+        contactData.setPhoneNumber(phoneNumber);
     }
 
-   public static class ZipCodeComparator implements Comparator<Entry> {
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(contactData.getFirstName()).append(" ")
+                .append(contactData.getLastName()).append("\n")
+                .append(addressData.getStreetAddress()).append("\n")
+                .append(addressData.getCity()).append(", ")
+                .append(addressData.getState()).append(" ")
+                .append(addressData.getZipCode());
+        return builder.toString();
+    }
+    public static class zipComparator implements Serializable, Comparator<Entry> {
 
         @Override
-        public int compare(Entry o1, Entry o2) {
+        public int compare(Entry entry1, Entry entry2) {
 
-            short zip1 = o1.getLocation().getZipCode();
-            short zip2 = o2.getLocation().getZipCode();
-            int res = Short.compare(zip1, zip2);
+            int zip1 = entry1.getAddressData().getZipCode();
+            int zip2 = entry2.getAddressData().getZipCode();
+            int res = Integer.compare(zip1, zip2);
 
-            if (res == 0) {
+            if (res != 0) {
                 return res;
             }
 
-            String first = o1.getContact().getLastName() + o1.getContact().getFirstName();
-            String second = o2.getContact().getLastName() + o2.getContact().getFirstName();
+            res = entry1.getContactData().compareTo(entry2.getContactData());
 
-            return first.compareTo(second);
+            if (res != 0) {
+                return res;
+            }
+
+            return entry1.getAddressData().compareTo(entry2.getAddressData());
         }
 
     }
-
-   public static class NameComparator implements Comparator<Entry> {
+    public static class lastNameComparator implements Serializable, Comparator<Entry> {
 
         @Override
         public int compare(Entry o1, Entry o2) {
-            String first = o1.getContact().getLastName() + o1.getContact().getFirstName();
-            String second = o2.getContact().getLastName() + o2.getContact().getFirstName();
-            return first.compareTo(second);
+            return o1.getContactData().compareTo(o2.getContactData());
         }
     }
-
 }

@@ -25,27 +25,21 @@ public class FileMenu {
         return addressBook;
     }
 
-    public void save(AddressBook addressBook) {
+    public void save(String path, AddressBook addressBook) {
 
-        if (file == null || file.exists()) {
-            saveAs();
-        }
-        else{
-            try {
-                FileOutputStream input = new FileOutputStream(file, false);
-                ObjectOutputStream objectOut = new ObjectOutputStream(input);
-                objectOut.writeObject(addressBook);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            FileOutputStream input = new FileOutputStream(path, false);
+            ObjectOutputStream objectOut = new ObjectOutputStream(input);
+            objectOut.writeObject(addressBook);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void saveAs() {
-        file = new File("newFilePath");
+    public void saveAs(String path) {
 
         try{
-            FileOutputStream out = new FileOutputStream(file);
+            FileOutputStream out = new FileOutputStream(path);
             ObjectOutputStream objectOut = new ObjectOutputStream(out);
             objectOut.writeObject(addressBook);
         }
