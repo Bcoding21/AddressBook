@@ -4,7 +4,8 @@ import java.util.*;
 public class AddressBook implements Serializable {
 
     /**
-     * Represents an Address Book. Uses a concatenation of fields
+     * Represents an Address Book. Stores  all entrys as a Map with
+     * a concatenation of fields of type String
      * as a key and entrys as the value. Can order entrys by
      * name or zipCode and insert or remove entrys and
      * other operations
