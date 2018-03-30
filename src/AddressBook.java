@@ -4,9 +4,7 @@ import java.util.*;
 public class AddressBook implements Serializable {
 
     /**
-     * Represents an Address Book and is implemented as
-     * a TreeMap for fast insertion, deletion, sorting, and
-     * removal of duplicates. Uses a concatenation of fields
+     * Represents an Address Book. Uses a concatenation of fields
      * as a key and entrys as the value. Can order entrys by
      * name or zipCode and insert or remove entrys and
      * other operations
@@ -17,7 +15,7 @@ public class AddressBook implements Serializable {
     private Map<String, Entry> entries;
 
     /**
-     * Used to generate a unique key for an entry
+     * Gets key based on zip code
      * @param entry Represents a persons's information
      * @return String that is the combination
      * of the entry's zipCode, last name, and first
@@ -30,6 +28,11 @@ public class AddressBook implements Serializable {
         return Integer.toString(zip) + lastName + firstName;
     }
 
+    /**
+     * Gets key based on last name
+     * @param entry Represent person's information
+     * @return String composed of last name then first name
+     */
     private String getLastNameBasedKey(Entry entry){
         String firstName = entry.getContact().getFirstName();
         String lastName = entry.getContact().getLastName();
@@ -53,6 +56,11 @@ public class AddressBook implements Serializable {
 
     public void remove(String key) { entries.remove(key); }
 
+    /**
+     * Changes order by creating new map
+     * and inserting old values with
+     * new keys
+     */
     public void orderByZip () {
         Map<String, Entry> zipOrdered = new TreeMap<>();
         entries.forEach((String key, Entry entry) -> zipOrdered.put(getZipBasedKey(entry), entry));

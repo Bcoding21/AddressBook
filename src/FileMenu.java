@@ -1,6 +1,4 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FileMenu {
 
@@ -11,24 +9,22 @@ public class FileMenu {
      * saving and closing Address Books.
      */
     private File file;
-    private List<AddressBook> openBooks;
+    private AddressBook addressBook;
     private final String outputDirPath = "AddressBooks\\";
 
-    public FileMenu(){
-        openBooks = new ArrayList<>();
-        file = new File(outputDirPath);
-        file.mkdir();
-    }
+    public FileMenu(){ new File(outputDirPath).mkdir(); }
 
     public AddressBook open(String path){
 
-        AddressBook addressBook = new AddressBook();
-        try{
+        if (addressBook != null){
+            close();
+        }
+
+        try {
             file = new File(outputDirPath + path);
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             addressBook = (AddressBook) objectInputStream.readObject();
-            openBooks.add(addressBook);
         }
         catch (IOException e){
             e.printStackTrace();
@@ -40,7 +36,7 @@ public class FileMenu {
         return addressBook;
     }
 
-    public void save(String path, AddressBook addressBook) {
+    public void save(String path) {
         try {
             FileOutputStream input = new FileOutputStream(outputDirPath + path, false);
             ObjectOutputStream objectOut = new ObjectOutputStream(input);
@@ -50,7 +46,7 @@ public class FileMenu {
         }
     }
 
-    public void saveAs(String path, AddressBook addressBook) {
+    public void saveAs(String path) {
 
         try{
             FileOutputStream out = new FileOutputStream(outputDirPath + path);
@@ -63,13 +59,10 @@ public class FileMenu {
     }
 
     AddressBook createNewBook() {
-        AddressBook addressBook = new AddressBook();
-        openBooks.add(addressBook);
+        addressBook = new AddressBook();
         return addressBook;
     }
 
-    public void close(AddressBook addressBook){
-        openBooks.remove(addressBook);
-    }
+    public void close(){ addressBook = null; }
 
 }
