@@ -1,3 +1,5 @@
+import javafx.util.Pair;
+
 import java.util.Random;
 
 public class Main {
@@ -12,8 +14,10 @@ public class Main {
             Contact contact = new Contact(getRandChars(), getRandChars(), getRandChars());
             Address address = new Address(getRandChars(),
                     getRandChars(), getRandChars(), rand.nextInt(100000) + 1);
-            addressBook.add(new Entry(contact, address));
+            addressBook.add(contact, address);
         }
+
+
 
         addressBook.orderByZip();
         addressBook.orderByLastName();

@@ -14,6 +14,8 @@ public class Address implements Serializable{
     private String state;
     private int zipCode;
 
+    public Address(){}
+
     public Address(String streetAddress, String city, String state, int zipCode) {
         this.streetAddress = streetAddress.toLowerCase();
         this.city = city.toLowerCase();

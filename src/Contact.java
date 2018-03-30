@@ -10,6 +10,8 @@ public class Contact implements Serializable {
     private String lastName;
     private String phoneNumber;
 
+    public  Contact() {}
+
     public Contact(String first, String last, String number){
         firstName = first.toLowerCase();
         lastName = last.toLowerCase();

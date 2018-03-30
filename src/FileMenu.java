@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Scanner;
 
 public class FileMenu {
 
@@ -36,9 +37,21 @@ public class FileMenu {
         return addressBook;
     }
 
-    public void save(String path) {
+    private String promptFilePath(){
+        System.out.print("Enter file path for new file: ");
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
+    }
+
+    public void save() {
+
+        if (file == null){
+            saveAs();
+            return;
+        }
+
         try {
-            FileOutputStream input = new FileOutputStream(outputDirPath + path, false);
+            FileOutputStream input = new FileOutputStream(file, false);
             ObjectOutputStream objectOut = new ObjectOutputStream(input);
             objectOut.writeObject(addressBook);
         } catch (IOException e) {
@@ -46,10 +59,12 @@ public class FileMenu {
         }
     }
 
-    public void saveAs(String path) {
+    public void saveAs() {
+
+        file = new File(promptFilePath());
 
         try{
-            FileOutputStream out = new FileOutputStream(outputDirPath + path);
+            FileOutputStream out = new FileOutputStream(file);
             ObjectOutputStream objectOut = new ObjectOutputStream(out);
             objectOut.writeObject(addressBook);
         }
@@ -63,6 +78,9 @@ public class FileMenu {
         return addressBook;
     }
 
-    public void close(){ addressBook = null; }
+    public void close(){
+        addressBook = null;
+        file = null;
+    }
 
 }
