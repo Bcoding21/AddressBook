@@ -1,13 +1,20 @@
 import java.io.Serializable;
 
-public class AddressData implements Comparable<AddressData>, Serializable{
+
+public class Address implements Serializable{
+
+    /**
+     * Represents a person's address.
+     * Supports operations to retrieve
+     * and change data
+     */
 
     private String streetAddress;
     private String city;
     private String state;
     private int zipCode;
 
-    public AddressData(String streetAddress, String city, String state, int zipCode) {
+    public Address(String streetAddress, String city, String state, int zipCode) {
         this.streetAddress = streetAddress.toLowerCase();
         this.city = city.toLowerCase();
         this.state = state.toLowerCase();
@@ -46,26 +53,4 @@ public class AddressData implements Comparable<AddressData>, Serializable{
         this.zipCode = zipCode;
     }
 
-    @Override
-    public int compareTo(AddressData a) {
-       int res = state.compareTo(a.state);
-
-       if (res != 0){
-           return res;
-       }
-
-        res = Integer.compare(zipCode, a.zipCode);
-
-        if (res != 0){
-            return res;
-        }
-
-       res = city.compareTo(a.city);
-
-       if (res != 0) {
-           return res;
-       }
-
-       return streetAddress.compareTo(a.streetAddress);
-    }
 }

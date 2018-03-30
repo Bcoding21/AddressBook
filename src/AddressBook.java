@@ -3,54 +3,72 @@ import java.util.*;
 
 public class AddressBook implements Serializable {
 
+    /**
+     * Represents an Address Book and is implemented as
+     * a TreeMap for fast insertion, deletion, sorting, and
+     * removal of duplicates. Uses a concatenation of fields
+     * as a key and entrys as the value. Can order entrys by
+     * name or zipCode and insert or remove entrys and
+     * other operations
+     */
+
     private String bookName;
     private String filePath;
-    private Set<Entry> entries;
+    private Map<String, Entry> entries;
+
+    /**
+     * Used to generate a unique key for an entry
+     * @param entry Represents a persons's information
+     * @return String that is the combination
+     * of the entry's zipCode, last name, and first
+     * name in that order
+     */
+    private String getZipBasedKey(Entry entry){
+        int zip = entry.getAddress().getZipCode();
+        String firstName = entry.getContact().getFirstName();
+        String lastName = entry.getContact().getLastName();
+        return Integer.toString(zip) + lastName + firstName;
+    }
+
+    private String getLastNameBasedKey(Entry entry){
+        String firstName = entry.getContact().getFirstName();
+        String lastName = entry.getContact().getLastName();
+        return lastName + firstName;
+    }
 
     public AddressBook(){
         bookName = "";
         filePath = "";
-        entries = new TreeSet<>(new Entry.lastNameComparator());
-    }
-
-    public String getFilePath() { return filePath; }
-
-    public void setFilePath(String filePath) { this.filePath = filePath; }
-
-    public AddressBook(AddressBook addressBook){
-        entries = addressBook.entries;
+        entries = new TreeMap();
     }
 
     public void setBookName(String name){ bookName = name; }
 
     public void add(Entry entry){
         if (entry != null){
-            entries.add(entry);
+            String entryKey = getLastNameBasedKey(entry);
+            entries.put(entryKey, entry);
         }
     }
 
-    public boolean remove(String phoneNumber) {
-        return entries.removeIf((Entry entry) ->
-                entry.getContactData().getPhoneNumber().compareTo(phoneNumber) == 0);
-    }
+    public void remove(String key) { entries.remove(key); }
 
     public void orderByZip () {
-        Set<Entry> zipOrdered = new TreeSet<>(new Entry.zipComparator());
-        zipOrdered.addAll(entries);
+        Map<String, Entry> zipOrdered = new TreeMap<>();
+        entries.forEach((String key, Entry entry) -> zipOrdered.put(getZipBasedKey(entry), entry));
         entries = zipOrdered;
     }
 
     public void orderByLastName(){
-        Set<Entry> lastNameOrdered = new TreeSet<>(new Entry.lastNameComparator());
-        lastNameOrdered.addAll(entries);
-        entries = lastNameOrdered;
+        Map<String, Entry> lastNameSorted = new TreeMap<>();
+       entries.forEach((String key, Entry entry) -> lastNameSorted.put(getLastNameBasedKey(entry), entry));
+       entries = lastNameSorted;
     }
 
     public void printAllEntries() {
-        for (Entry entry : entries){
+        for (Entry entry : entries.values()){
             System.out.println(entry.toString());
             System.out.println();
         }
     }
-
 }

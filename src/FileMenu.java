@@ -4,6 +4,12 @@ import java.util.List;
 
 public class FileMenu {
 
+    /**
+     * Facilitates storing and retrieving of Address Books
+     * from files. Also maintains a list of books currently
+     * in use. Supports operations such as opening and
+     * saving and closing Address Books.
+     */
     private File file;
     private List<AddressBook> openBooks;
     private final String outputDirPath = "AddressBooks\\";
