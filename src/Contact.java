@@ -1,11 +1,11 @@
 import java.io.Serializable;
 
-
 public class Contact implements Comparable<Contact>, Serializable {
 
     /**
-     * Used to model contact information about a user
-     * Supports getter and setter operations.
+     * Used to model data about a person's contact
+     * information. Supports methods that get and
+     * set attributes.
      */
 
     private String firstName;

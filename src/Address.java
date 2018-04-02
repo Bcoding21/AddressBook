@@ -5,7 +5,7 @@ public class Address implements Comparable<Address>, Serializable{
     /**
      * Used to model a person's complete address.
      * Supports getter and setter operations.
-     */
+     * */
 
     private String streetAddress;
     private String city;

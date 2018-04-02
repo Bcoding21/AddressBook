@@ -9,17 +9,19 @@ public class Menu {
      * and retrieving address book classes from files.
      * Works with one address book at one time
      */
-
     private File file;
     private AddressBook addressBook;
-
-    public Menu(){}
+    private final String outputDirPath = "AddressBooks\\";
 
     public AddressBook open(String path){
 
-        try{
-            file = new File(path);
-            FileInputStream fileInputStream = new FileInputStream(file);
+        if (addressBook != null){
+            close();
+        }
+
+        try {
+            file = new File(outputDirPath + path);
+            FileInputStream fileInputStream = new FileInputStream(outputDirPath + file);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             addressBook = (AddressBook) objectInputStream.readObject();
         }
@@ -33,13 +35,14 @@ public class Menu {
         return addressBook;
     }
 
+
     public void save() {
         if (file == null){
             saveAs();
             return;
         }
         try {
-            FileOutputStream input = new FileOutputStream(file, false);
+            FileOutputStream input = new FileOutputStream(outputDirPath + file, false);
             ObjectOutputStream objectOut = new ObjectOutputStream(input);
             objectOut.writeObject(addressBook);
         } catch (IOException e) {

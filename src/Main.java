@@ -17,15 +17,17 @@ public class Main {
             Address address = new Address(getRandChars(), getRandChars(), getRandChars(), rand.nextInt(max));
             book.add(new Entry(contact, address));
         }
-
-        book.orderByZip();
-        book.orderByLastName();
         boolean passed = isSortedByName(book.getEntries());
 
     }
 
+    /**
+     * Used to fill address book with fake data
+     * @return Random sequence of characters
+     */
+
     public static String getRandChars(){
-        final String alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         final int N = alphabet.length();
 
         Random r = new Random();
