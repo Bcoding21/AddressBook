@@ -9,6 +9,7 @@ public class AddressBook implements Serializable {
      * Sorts entries by last name initially.
      */
 
+
     private Set<Entry> entrySet;
 
     public AddressBook(){ entrySet = new TreeSet<>(); }
@@ -38,4 +39,6 @@ public class AddressBook implements Serializable {
     }
 
     public void printAllEntries() {}
+
+    public Set getEntries(){ return entrySet; }
 }
