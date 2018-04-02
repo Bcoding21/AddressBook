@@ -1,11 +1,10 @@
-import java.io.*;
 import java.util.Random;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        FileMenu menu = new FileMenu();
+        Menu menu = new Menu();
 
         AddressBook addressBook[] = new AddressBook[10];
 
@@ -13,9 +12,6 @@ public class Main {
             String num = Integer.toString(i + 1);
             addressBook[i] = menu.open("addressBook" + num + ".bin");
         }
-
-
-
 
     }
 

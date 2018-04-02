@@ -1,12 +1,18 @@
 import java.io.Serializable;
 
 
-public class ContactData implements Comparable<ContactData>, Serializable {
+public class Contact implements Comparable<Contact>, Serializable {
+
+    /**
+     * Used to model contact information about a user
+     * Supports getter and setter operations.
+     */
+
     private String firstName;
     private String lastName;
     private String phoneNumber;
 
-    public ContactData(String first, String last, String number){
+    public Contact(String first, String last, String number){
         firstName = first.toLowerCase();
         lastName = last.toLowerCase();
         phoneNumber = number;
@@ -29,7 +35,7 @@ public class ContactData implements Comparable<ContactData>, Serializable {
     }
 
     @Override
-    public int compareTo(ContactData o) {
+    public int compareTo(Contact o) {
         String f1 = lastName + firstName;
         String f2 = o.lastName + o.firstName;
 

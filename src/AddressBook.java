@@ -3,48 +3,39 @@ import java.util.*;
 
 public class AddressBook implements Serializable {
 
-    private String bookName;
-    private Set<Entry> entries;
+    /**
+     * Used to represent an address book. Supports
+     * operations such as add, remove, and sort order.
+     * Sorts entries by last name initially.
+     */
 
-    public AddressBook(){
-        bookName = "AddressBook";
-        entries = new TreeSet<>(new Entry.lastNameComparator());
-    }
+    private Set<Entry> entrySet;
 
-    public AddressBook(AddressBook addressBook){
-        entries = addressBook.entries;
-    }
+    public AddressBook(){ entrySet = new TreeSet<>(); }
 
-    public void setBookName(String name){ bookName = name; }
+    public AddressBook(AddressBook addressBook){ entrySet = new TreeSet<>(addressBook.entrySet); }
 
     public void add(Entry entry){
         if (entry != null){
-            entries.add(entry);
+          entrySet.add(entry);
         }
     }
 
-    public boolean remove(String phoneNumber) {
-        return entries.removeIf((Entry entry) ->
-                entry.getContactData().getPhoneNumber().compareTo(phoneNumber) == 0);
+    public boolean remove(Entry entry) {
+        return entry != null && entrySet.remove(entry);
     }
 
     public void orderByZip () {
-        Set<Entry> zipOrdered = new TreeSet<>(new Entry.zipComparator());
-        zipOrdered.addAll(entries);
-        entries = zipOrdered;
+       Set<Entry> zipOrdered = new TreeSet<>(new Entry.zipComparator());
+       zipOrdered.addAll(entrySet);
+       entrySet = zipOrdered;
     }
 
     public void orderByLastName(){
-        Set<Entry> lastNameOrdered = new TreeSet<>(new Entry.lastNameComparator());
-        lastNameOrdered.addAll(entries);
-        entries = lastNameOrdered;
+        Set<Entry> nameOrdered = new TreeSet<>(new Entry.lastNameComparator());
+        nameOrdered.addAll(entrySet);
+        entrySet = nameOrdered;
     }
 
-    public void printAllEntries() {
-        for (Entry entry : entries){
-            System.out.println(entry.toString());
-            System.out.println();
-        }
-    }
-
+    public void printAllEntries() {}
 }

@@ -1,75 +1,87 @@
 import java.io.Serializable;
 import java.util.Comparator;
 
-public class Entry implements Serializable {
+public class Entry implements Comparable<Entry>, Serializable {
 
-    private ContactData contactData;
-    private AddressData addressData;
+    /**
+     * Used to represent a person's information in an Address book
+     * Comprised of a Contact class and an Address class. Supports
+     * getter and setter operations.
+     */
 
-    public Entry(ContactData contactData, AddressData addressData) {
-        this.contactData = contactData;
-        this.addressData = addressData;
+    private Contact contact;
+    private Address address;
+
+    public Entry(Contact contact, Address address) {
+        this.contact = contact;
+        this.address = address;
     }
 
-    public ContactData getContactData() {
-        return contactData;
+    public Contact getContact() {
+        return contact;
     }
 
-    public AddressData getAddressData() {
-        return addressData;
+    public Address getAddress() {
+        return address;
     }
 
     public void changeAddress(String address) {
-        this.addressData.setStreetAddress(address.toLowerCase());
+        this.address.setStreetAddress(address.toLowerCase());
     }
 
     public void changeCity(String city) {
-        addressData.setCity(city.toLowerCase());
+        address.setCity(city.toLowerCase());
     }
 
     public void changeState(String state) {
-        addressData.setState(state.toLowerCase());
+        address.setState(state.toLowerCase());
     }
 
     public void changeZipCode(int zipCode) {
-        addressData.setZipCode(zipCode);
+        address.setZipCode(zipCode);
     }
 
     public void changePhoneNumber(String phoneNumber) {
-        contactData.setPhoneNumber(phoneNumber);
+        contact.setPhoneNumber(phoneNumber);
     }
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(contactData.getFirstName()).append(" ")
-                .append(contactData.getLastName()).append("\n")
-                .append(addressData.getStreetAddress()).append("\n")
-                .append(addressData.getCity()).append(", ")
-                .append(addressData.getState()).append(" ")
-                .append(addressData.getZipCode());
+        builder.append(contact.getFirstName()).append(" ")
+                .append(contact.getLastName()).append("\n")
+                .append(address.getStreetAddress()).append("\n")
+                .append(address.getCity()).append(", ")
+                .append(address.getState()).append(" ")
+                .append(address.getZipCode());
         return builder.toString();
     }
+
+    @Override
+    public int compareTo(Entry o) {
+        return contact.compareTo(o.contact);
+    }
+
     public static class zipComparator implements Serializable, Comparator<Entry> {
 
         @Override
         public int compare(Entry entry1, Entry entry2) {
 
-            int zip1 = entry1.getAddressData().getZipCode();
-            int zip2 = entry2.getAddressData().getZipCode();
+            int zip1 = entry1.getAddress().getZipCode();
+            int zip2 = entry2.getAddress().getZipCode();
             int res = Integer.compare(zip1, zip2);
 
             if (res != 0) {
                 return res;
             }
 
-            res = entry1.getContactData().compareTo(entry2.getContactData());
+            res = entry1.getContact().compareTo(entry2.getContact());
 
             if (res != 0) {
                 return res;
             }
 
-            return entry1.getAddressData().compareTo(entry2.getAddressData());
+            return entry1.getAddress().compareTo(entry2.getAddress());
         }
 
     }
@@ -77,7 +89,7 @@ public class Entry implements Serializable {
 
         @Override
         public int compare(Entry o1, Entry o2) {
-            return o1.getContactData().compareTo(o2.getContactData());
+            return o1.getContact().compareTo(o2.getContact());
         }
     }
 }
