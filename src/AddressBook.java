@@ -5,9 +5,10 @@ import java.util.*;
 
 public class AddressBook implements Serializable {
     /**
-     * Used to represent an address book. Supports
-     * operations such as add, remove, and sort order.
-     * Sorts entries by last name initially.
+     * Used to represent an address book with entries
+     * stored as a treeSet. Supports basic operations
+     * operations such as add, remove, and sorting by
+     * certain values. Sorts entries by last name initially.
      */
 
     private Set<Entry> entrySet;
@@ -24,6 +25,18 @@ public class AddressBook implements Serializable {
 
     public boolean remove(Entry entry) {
         return entry != null && entrySet.remove(entry);
+    }
+
+    void orderByZip(){
+        Set<Entry> zipOrdered = new TreeSet<>(new Entry.zipComparator());
+        zipOrdered.addAll(entrySet);
+        entrySet = zipOrdered;
+    }
+
+    void orderByLastName(){
+        Set<Entry> lastNameOrdered = new TreeSet<>(new Entry.lastNameComparator());
+        lastNameOrdered.addAll(entrySet);
+        entrySet = lastNameOrdered;
     }
 
     public void printAllEntries() {}

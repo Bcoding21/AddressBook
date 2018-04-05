@@ -5,7 +5,8 @@ public class Contact implements Comparable<Contact>, Serializable {
     /**
      * Used to model data about a person's contact
      * information. Supports methods that get and
-     * set attributes.
+     * set attributes. Compared by using last name
+     * then first name then phone number
      */
 
     private String firstName;

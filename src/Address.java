@@ -5,6 +5,8 @@ public class Address implements Comparable<Address>, Serializable{
     /**
      * Used to model a person's complete address.
      * Supports getter and setter operations.
+     * Compared by using state, then zip code, then
+     * zip code, then street address.
      * */
 
     private String streetAddress;
@@ -50,6 +52,7 @@ public class Address implements Comparable<Address>, Serializable{
     public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
     }
+
 
     @Override
     public int compareTo(Address a) {

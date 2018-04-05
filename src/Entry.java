@@ -59,7 +59,13 @@ public class Entry implements Comparable<Entry>, Serializable {
 
     @Override
     public int compareTo(Entry o) {
-        return contact.compareTo(o.contact);
+        int res =  contact.compareTo(o.contact);
+
+        if (res == 0){
+            return address.compareTo(o.address);
+        }
+
+        return res;
     }
 
     public static class zipComparator implements Serializable, Comparator<Entry> {

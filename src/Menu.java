@@ -2,7 +2,6 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Menu {
-
     /**
      * Used to manipulate an Address Book class
      * Supported operations are deal with storing
@@ -14,14 +13,12 @@ public class Menu {
     private final String outputDirPath = "AddressBooks\\";
 
     public AddressBook open(String path){
-
         if (addressBook != null){
             close();
         }
-
         try {
             file = new File(outputDirPath + path);
-            FileInputStream fileInputStream = new FileInputStream(outputDirPath + file);
+            FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             addressBook = (AddressBook) objectInputStream.readObject();
         }
@@ -31,10 +28,8 @@ public class Menu {
         catch (ClassNotFoundException c){
             c.printStackTrace();
         }
-
         return addressBook;
     }
-
 
     public void save() {
         if (file == null){
@@ -42,7 +37,7 @@ public class Menu {
             return;
         }
         try {
-            FileOutputStream input = new FileOutputStream(outputDirPath + file, false);
+            FileOutputStream input = new FileOutputStream( file, false);
             ObjectOutputStream objectOut = new ObjectOutputStream(input);
             objectOut.writeObject(addressBook);
         } catch (IOException e) {
@@ -51,9 +46,7 @@ public class Menu {
     }
 
     public void saveAs() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter file path: ");
-        file = new File(scanner.nextLine());
+        file = new File(outputDirPath + "TestBook.bin");
         save();
     }
 
@@ -67,4 +60,11 @@ public class Menu {
         addressBook = null;
     }
 
+    public AddressBook getAddressBook() {
+        return addressBook;
+    }
+
+    public File getFile() {
+        return file;
+    }
 }
