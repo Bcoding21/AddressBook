@@ -1,5 +1,4 @@
-import javafx.util.Pair;
-
+import java.awt.print.Book;
 import java.io.Serializable;
 import java.util.*;
 
@@ -11,35 +10,93 @@ public class AddressBook implements Serializable {
      * certain values. Sorts entries by last name initially.
      */
 
-    private Set<Entry> entrySet;
+    public enum Order {LAST_NAME, ZIP};
+    private Map<String, BookEntry> entries;
+    private Order order;
 
-    public AddressBook(){ entrySet = new TreeSet<>(); }
+    public AddressBook(){
+        entries = new TreeMap<>();
+        order = Order.LAST_NAME;
+    }
 
-    public AddressBook(AddressBook addressBook){ entrySet = new TreeSet<>(addressBook.entrySet); }
+    public AddressBook(AddressBook addressBook){
+        entries = new TreeMap<>(addressBook.entries);
+        order = Order.LAST_NAME;
+    }
 
-    public void add(Entry entry){
-        if (entry != null){
-          entrySet.add(entry);
+    public void add(BookEntry bookEntry){
+        if (bookEntry != null){
+            String key = getKey(bookEntry);
+            if (!entries.containsKey(key)){
+                entries.put(key, bookEntry);
+            }
         }
     }
 
-    public boolean remove(Entry entry) {
-        return entry != null && entrySet.remove(entry);
+    public BookEntry remove(String key) {
+        return entries.remove(key.toLowerCase());
     }
 
     void orderByZip(){
-        Set<Entry> zipOrdered = new TreeSet<>(new Entry.zipComparator());
-        zipOrdered.addAll(entrySet);
-        entrySet = zipOrdered;
+        Map<String, BookEntry> zipSorted = new TreeMap<>();
+        order = Order.ZIP;
+        entries.forEach((String key, BookEntry bookEntry)
+                -> zipSorted.put(getKey(bookEntry), bookEntry));
+        entries = zipSorted;
     }
 
     void orderByLastName(){
-        Set<Entry> lastNameOrdered = new TreeSet<>(new Entry.lastNameComparator());
-        lastNameOrdered.addAll(entrySet);
-        entrySet = lastNameOrdered;
+        Map<String, BookEntry> lastNameSorted = new TreeMap<>();
+        entries.forEach((String key, BookEntry bookEntry)
+                -> lastNameSorted.put(getKey(bookEntry), bookEntry));
+        entries = lastNameSorted;
+    }
+
+    public void changePhoneNumber(String key, String number){
+        entries.get(key).getContact().setPhoneNumber(number);
+    }
+
+    public void changeStreetAddress(String key, String address){
+        entries.get(key).getAddress().setStreetAddress(address);
+    }
+
+    public void changeCity(String key, String city) {
+        entries.get(key).getAddress().setCity(city);
+    }
+
+    public void changeState(String key, String state){
+        entries.get(key).getAddress().setState(state);
+    }
+
+    public void changeZip(String key, int zipCode) {
+        BookEntry bookEntry = remove(key);
+        bookEntry.getAddress().setZipCode(zipCode);
+        String newKey = getKey(bookEntry);
+        entries.put(newKey, bookEntry);
     }
 
     public void printAllEntries() {}
 
-    public Set getEntries(){ return entrySet; }
+    public Map<String, BookEntry> getEntries() {
+        return entries;
+    }
+
+    private String getKey(BookEntry bookEntry){
+
+        switch (order){
+
+            case LAST_NAME: {
+                return bookEntry.getContact().getLastName() +
+                        bookEntry.getContact().getFirstName();
+            }
+
+            case ZIP:
+                return bookEntry.getAddress().getZipCode() +
+                        bookEntry.getContact().getLastName() +
+                        bookEntry.getContact().getFirstName();
+
+                default:
+                    return "";
+        }
+    }
 }

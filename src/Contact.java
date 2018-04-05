@@ -1,6 +1,6 @@
 import java.io.Serializable;
 
-public class Contact implements Comparable<Contact>, Serializable {
+public class Contact implements Serializable {
 
     /**
      * Used to model data about a person's contact
@@ -35,18 +35,5 @@ public class Contact implements Comparable<Contact>, Serializable {
         return phoneNumber;
     }
 
-    @Override
-    public int compareTo(Contact o) {
-        String f1 = lastName + firstName;
-        String f2 = o.lastName + o.firstName;
-
-        int res = f1.compareTo(f2);
-
-        if (res != 0){
-            return res;
-        }
-
-        return phoneNumber.compareTo(o.phoneNumber);
-    }
 }
 

@@ -6,18 +6,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Menu menu = new Menu();
-
-        AddressBook book = new AddressBook();
-        Random rand = new Random();
-        int max = 100000;
-
-        for (int i = 0; i < max; i++){
-            Contact contact = new Contact(getRandChars(), getRandChars(), getRandChars());
-            Address address = new Address(getRandChars(), getRandChars(), getRandChars(), rand.nextInt(max));
-            book.add(new Entry(contact, address));
-        }
-        boolean passed = isSortedByName(book.getEntries());
 
     }
 
@@ -36,20 +24,6 @@ public class Main {
             builder.append(alphabet.charAt(r.nextInt(N)));
         }
         return builder.toString();
-    }
-
-    public static boolean isSortedByName(Set<Entry> entrySet){
-        Iterator<Entry> iterator = entrySet.iterator();
-        Entry lastEntry = iterator.next();
-
-        while (iterator.hasNext()){
-            Entry currentEntry = iterator.next();
-            if (currentEntry.compareTo(lastEntry) < 0){
-                return false;
-            }
-            lastEntry = currentEntry;
-        }
-        return true;
     }
 
 }
