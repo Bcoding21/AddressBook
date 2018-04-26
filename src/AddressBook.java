@@ -1,4 +1,3 @@
-import java.awt.print.Book;
 import java.io.Serializable;
 import java.util.*;
 
@@ -9,94 +8,53 @@ public class AddressBook implements Serializable {
      * operations such as add, remove, and sorting by
      * certain values. Sorts entries by last name initially.
      */
-
-    public enum Order {LAST_NAME, ZIP};
-    private Map<String, BookEntry> entries;
+    private Map<String, Person> entries;
     private Order order;
 
     public AddressBook(){
         entries = new TreeMap<>();
-        order = Order.LAST_NAME;
+        order = new LastNameOrder();
     }
 
     public AddressBook(AddressBook addressBook){
         entries = new TreeMap<>(addressBook.entries);
-        order = Order.LAST_NAME;
+        order = addressBook.order;
+
     }
 
-    public void add(BookEntry bookEntry){
-        if (bookEntry != null){
-            String key = getKey(bookEntry);
-            if (!entries.containsKey(key)){
-                entries.put(key, bookEntry);
-            }
+    public void add(Person person){
+        String key = order.getKey(person);
+        if (!entries.containsKey(key)){
+            entries.put(key, person);
         }
     }
 
-    public BookEntry remove(String key) {
-        return entries.remove(key.toLowerCase());
+    public void setOrder(Order order) {
+        this.order = order;
+        entries = order.sort(entries);
     }
 
-    void orderByZip(){
-        Map<String, BookEntry> zipSorted = new TreeMap<>();
-        order = Order.ZIP;
-        entries.forEach((String key, BookEntry bookEntry)
-                -> zipSorted.put(getKey(bookEntry), bookEntry));
-        entries = zipSorted;
-    }
+    public boolean remove(String key) { return entries.remove(key) != null; }
 
-    void orderByLastName(){
-        Map<String, BookEntry> lastNameSorted = new TreeMap<>();
-        entries.forEach((String key, BookEntry bookEntry)
-                -> lastNameSorted.put(getKey(bookEntry), bookEntry));
-        entries = lastNameSorted;
-    }
+    public void changePhoneNumber(String key, String number){ entries.get(key).setPhoneNumber(number); }
 
-    public void changePhoneNumber(String key, String number){
-        entries.get(key).getContact().setPhoneNumber(number);
-    }
+    public void changeStreetAddress(String key, String address){ entries.get(key).setStreetAddress(address); }
 
-    public void changeStreetAddress(String key, String address){
-        entries.get(key).getAddress().setStreetAddress(address);
-    }
-
-    public void changeCity(String key, String city) {
-        entries.get(key).getAddress().setCity(city);
-    }
+    public void changeCity(String key, String city) { entries.get(key).setCity(city); }
 
     public void changeState(String key, String state){
-        entries.get(key).getAddress().setState(state);
+        entries.get(key).setState(state);
     }
 
     public void changeZip(String key, int zipCode) {
-        BookEntry bookEntry = remove(key);
-        bookEntry.getAddress().setZipCode(zipCode);
-        String newKey = getKey(bookEntry);
-        entries.put(newKey, bookEntry);
+        Person person = entries.remove(key);
+        person.setZipCode(zipCode);
+        entries.put(order.getKey(person), person);
     }
 
-    public void printAllEntries() {}
+    public void printAllEntries() { entries.forEach((String key, Person entry) -> System.out.println(entry.toString())); }
 
-    public Map<String, BookEntry> getEntries() {
+    public Map<String, Person> getEntries() {
         return entries;
-    }
-
-    private String getKey(BookEntry bookEntry){
-
-        switch (order){
-
-            case LAST_NAME: {
-                return bookEntry.getContact().getLastName() +
-                        bookEntry.getContact().getFirstName();
-            }
-
-            case ZIP:
-                return bookEntry.getAddress().getZipCode() +
-                        bookEntry.getContact().getLastName() +
-                        bookEntry.getContact().getFirstName();
-
-                default:
-                    return "";
-        }
     }
 }

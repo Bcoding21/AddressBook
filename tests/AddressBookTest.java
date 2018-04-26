@@ -1,3 +1,4 @@
+import junit.extensions.TestSetup;
 import org.junit.Test;
 
 import java.util.*;
@@ -6,61 +7,69 @@ import static org.junit.Assert.*;
 
 public class AddressBookTest {
 
-    private Contact contact = new Contact("Brandon", "Cole", "240-374-2961");
-    private Address address = new Address("10731 Castleton Way",
-            "Upper Marlboro", "Maryland", 20774);
-    private BookEntry bookEntry = new BookEntry(contact, address);
+    private Person personA = new Person.Builder()
+            .firstName("Brandon")
+            .lastName("Cole")
+            .phoneNumber("222")
+            .city("Upper")
+            .state("MD")
+            .streetAddress("10831")
+            .zipCode(30013)
+            .build();
 
-    private Address address2 = new Address("2225 4th Street", "Washington D.C",
-            "Washington D.C", 20005);
-    private Contact contact2 = new Contact("John", "Smith", "240-453-8795");
-    private BookEntry bookEntry2 = new BookEntry(contact2, address2);
+    private Person personB = new Person.Builder()
+            .firstName("John")
+            .lastName("Smith")
+            .phoneNumber("240-453-8795")
+            .city("Washington D.C")
+            .state("Washington D.C")
+            .streetAddress("2225 4th Street")
+            .zipCode(20005)
+            .build();
+
+    private Order zipOrder = new ZipOrder();
+    private Order nameOrder = new LastNameOrder();
 
     @Test
     public void remove() {
         AddressBook book = new AddressBook();
-        book.add(bookEntry);
-        book.orderByZip();
-        String key = "20774ColeBrandon";
-        BookEntry bookEntry = book.remove(key);
-        assertTrue(bookEntry != null);
+        book.add(personA);
+        assertTrue(book.remove(nameOrder.getKey(personA)));
     }
 
     @Test
     public void add() {
         AddressBook book = new AddressBook();
-        book.add(bookEntry2);
-        assertTrue(book.remove("SmithJohn") != null);
+        book.add(personA);
+        assertTrue(book.remove(nameOrder.getKey(personA)));
     }
 
     @Test
     public void orderByZip() {
         AddressBook book = new AddressBook();
-        book.orderByZip();
+        book.setOrder(zipOrder);
+        book.add(personA);
+        book.add(personB);
 
-        book.add(bookEntry);
-        book.add(bookEntry2);
+        List<Person> actual = new ArrayList<>(book.getEntries().values());
 
-        List<BookEntry> actual = new ArrayList<>(book.getEntries().values());
-
-        List<BookEntry> expected = new ArrayList<>();
-        expected.add(bookEntry2);
-        expected.add(bookEntry);
+        List<Person> expected = new ArrayList<>();
+        expected.add(personB);
+        expected.add(personA);
         assertTrue(actual.equals(expected));
     }
 
     @Test
     public void orderByLastName() {
         AddressBook book = new AddressBook();
+        book.add(personB);
+        book.add(personA);
 
-        book.add(bookEntry2);
-        book.add(bookEntry);
+        List<Person> actual = new ArrayList<>(book.getEntries().values());
 
-        List<BookEntry> actual = new ArrayList<>(book.getEntries().values());
-
-        List<BookEntry> expected = new ArrayList<>();
-        expected.add(bookEntry);
-        expected.add(bookEntry2);
+        List<Person> expected = new ArrayList<>();
+        expected.add(personA);
+        expected.add(personB);
         assertTrue(actual.equals(expected));
     }
 }
