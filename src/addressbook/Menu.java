@@ -1,3 +1,5 @@
+package addressbook;
+
 import java.io.*;
 import java.util.Scanner;
 
@@ -8,18 +10,30 @@ public class Menu {
      * and retrieving address book classes from files.
      * Works with one address book at one time
      */
-    private File file;
+    private File file, dir;
     private AddressBook addressBook;
-    private final String outputDirPath = "AddressBooks\\";
+
+    public Menu(){
+        file = null;
+        dir = null;
+        addressBook = null;
+    }
+
+    public Menu(String path){
+        dir = new File(path);
+        file = null;
+        addressBook = null;
+    }
 
     public AddressBook open(String path){
-        if (addressBook != null){
-            close();
-        }
+
         try {
-            file = new File(outputDirPath + path);
+            file = new File(dir, path);
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            if (addressBook != null){
+                close();
+            }
             addressBook = (AddressBook) objectInputStream.readObject();
         }
         catch (IOException e){
@@ -46,11 +60,15 @@ public class Menu {
     }
 
     public void saveAs() {
-        file = new File(outputDirPath + "TestBook.bin");
+        String fileName;
+        System.out.println("Enter filename: ");
+        Scanner scanner = new Scanner(System.in);
+        fileName = scanner.nextLine();
+        file = new File(dir, fileName);
         save();
     }
 
-    AddressBook createNew() {
+    public AddressBook createNew() {
         addressBook = new AddressBook();
         return addressBook;
     }

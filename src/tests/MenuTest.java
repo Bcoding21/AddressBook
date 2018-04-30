@@ -1,18 +1,22 @@
+package tests;
+
+import addressbook.AddressBook;
+import addressbook.Menu;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class MenuTest {
+ public class MenuTest {
 
     @Test
-    public void open() {
+    public void testOpen() {
         Menu menu = new Menu();
         AddressBook book = menu.open("TestBook.bin");
         assertTrue(book.equals(menu.getAddressBook()));
     }
 
     @Test
-    public void save() {
+    public void testSave() {
         Menu menu = new Menu();
         menu.createNew();
         menu.save();
@@ -20,21 +24,21 @@ public class MenuTest {
     }
 
     @Test
-    public void saveAs() {
+    public void testSaveAs() {
     }
 
     @Test
-    public void createNew() {
+    public void testCreateNew() {
         Menu menu = new Menu();
         AddressBook book = menu.createNew();
         assertTrue(book == menu.getAddressBook());
     }
 
     @Test
-    public void close() {
+    public void testClose() {
         Menu menu = new Menu();
         menu.createNew();
-        save();
+        menu.save();
         menu.close();
         assertTrue(menu.getAddressBook() == null && menu.getFile() == null);
     }

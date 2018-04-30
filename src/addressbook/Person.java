@@ -1,3 +1,5 @@
+package addressbook;
+
 import java.io.Serializable;
 
 public class Person implements  Serializable {
@@ -16,7 +18,7 @@ public class Person implements  Serializable {
         phoneNumber = builder.phoneNumber;
         streetAddress = builder.streetAddress;
         city = builder.city;
-        streetAddress = builder.state;
+        state = builder.state;
         zipCode = builder.zipCode;
     }
 

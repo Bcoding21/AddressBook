@@ -1,3 +1,5 @@
+package addressbook;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -9,11 +11,11 @@ public class AddressBook implements Serializable {
      * certain values. Sorts entries by last name initially.
      */
     private Map<String, Person> entries;
-    private Order order;
+    private SortOrder order;
 
     public AddressBook(){
         entries = new TreeMap<>();
-        order = new LastNameOrder();
+        order = LastNameBased.getInstance();
     }
 
     public AddressBook(AddressBook addressBook){
@@ -29,9 +31,9 @@ public class AddressBook implements Serializable {
         }
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
-        entries = order.sort(entries);
+    public void sortBy(String criteria) {
+        order = SortOrderFactory.getInstance().getOrder(criteria);
+        order.sort(entries);
     }
 
     public boolean remove(String key) { return entries.remove(key) != null; }
@@ -54,7 +56,5 @@ public class AddressBook implements Serializable {
 
     public void printAllEntries() { entries.forEach((String key, Person entry) -> System.out.println(entry.toString())); }
 
-    public Map<String, Person> getEntries() {
-        return entries;
-    }
+    public Map<String, Person> getEntries(){ return entries; }
 }
