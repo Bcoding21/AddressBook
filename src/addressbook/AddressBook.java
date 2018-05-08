@@ -83,7 +83,7 @@ public class AddressBook implements Serializable {
         Person person = entries.remove(key);
         if (person != null){
             person.setZipCode(zipCode);
-            entries.put(order.getKey(person), person);
+            this.add(person);
         }
     }
 

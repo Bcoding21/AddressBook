@@ -3,7 +3,7 @@ import addressbook.Menu;
 import addressbook.Person;
 
 import java.io.IOException;
-import java.util.Scanner;
+
 
 public class Main {
 
@@ -19,6 +19,4 @@ public class Main {
 
 
     }
-
-
 }

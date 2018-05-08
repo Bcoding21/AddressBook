@@ -14,7 +14,7 @@ import java.util.Map;
 public interface Ordering extends Serializable {
 
     /**
-     * Orders an AddressBook objects internal map
+     * Sorts an AddressBook objects internal map
      * based on 1 or more Person object attributes.
      * @param person Map of type <String, Person>
      */
