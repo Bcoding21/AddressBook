@@ -10,31 +10,28 @@ public class Menu {
      * and retrieving address book classes from files.
      * Works with one address book at one time
      */
-    private File file, dir;
+
+    private String currFilePath;
     private AddressBook addressBook;
 
     public Menu(){
-        file = null;
-        dir = null;
-        addressBook = null;
-    }
-
-    public Menu(String path){
-        dir = new File(path);
-        file = null;
+        currFilePath = null;
         addressBook = null;
     }
 
     public AddressBook open(String path){
 
         try {
-            file = new File(dir, path);
-            FileInputStream fileInputStream = new FileInputStream(file);
+            currFilePath = path;
+            FileInputStream fileInputStream = new FileInputStream(new File(currFilePath));
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             if (addressBook != null){
                 close();
             }
             addressBook = (AddressBook) objectInputStream.readObject();
+        }
+        catch (EOFException e){
+            return null;
         }
         catch (IOException e){
             e.printStackTrace();
@@ -42,30 +39,27 @@ public class Menu {
         catch (ClassNotFoundException c){
             c.printStackTrace();
         }
+
         return addressBook;
     }
 
-    public void save() {
-        if (file == null){
+    public void saveAs() throws IOException {
+        currFilePath = "book2.bin";
+        save();
+    }
+
+    public void save() throws IOException {
+        if (currFilePath == null){
             saveAs();
             return;
         }
         try {
-            FileOutputStream input = new FileOutputStream( file, false);
+            FileOutputStream input = new FileOutputStream( currFilePath, false);
             ObjectOutputStream objectOut = new ObjectOutputStream(input);
             objectOut.writeObject(addressBook);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void saveAs() {
-        String fileName;
-        System.out.println("Enter filename: ");
-        Scanner scanner = new Scanner(System.in);
-        fileName = scanner.nextLine();
-        file = new File(dir, fileName);
-        save();
     }
 
     public AddressBook createNew() {
@@ -74,15 +68,21 @@ public class Menu {
     }
 
     public void close(){
-        file = null;
+        currFilePath = null;
         addressBook = null;
+    }
+
+    public void quit(){
+        System.exit(0);
     }
 
     public AddressBook getAddressBook() {
         return addressBook;
     }
 
-    public File getFile() {
-        return file;
+    public String getCurrFilePath() {
+        return currFilePath;
     }
+
+
 }

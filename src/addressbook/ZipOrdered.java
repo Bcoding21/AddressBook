@@ -3,15 +3,15 @@ package addressbook;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ZipBased implements SortOrder {
+public class ZipOrdered implements Ordering {
 
-    private static ZipBased instance;
+    private static ZipOrdered instance;
 
-    private ZipBased(){}
+    private ZipOrdered(){}
 
-    public static ZipBased getInstance(){
+    public static ZipOrdered getInstance(){
         if (instance == null){
-            instance = new ZipBased();
+            instance = new ZipOrdered();
         }
         return instance;
     }
@@ -23,10 +23,12 @@ public class ZipBased implements SortOrder {
     }
 
     @Override
-    public void sort(Map<String, Person> people) {
+    public void order(Map<String, Person> entries) {
         Map<String, Person> zipSorted = new TreeMap<>();
-        people.forEach((String key, Person person) -> zipSorted.put(getKey(person), person));
-        people = zipSorted;
+        entries.forEach((String key, Person person) ->
+                zipSorted.put(getKey(person), person));
+        entries = zipSorted;
+
     }
 }
 

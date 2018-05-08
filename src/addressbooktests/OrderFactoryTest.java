@@ -1,34 +1,34 @@
-package tests;
-import addressbook.LastNameBased;
-import addressbook.SortOrderFactory;
-import addressbook.ZipBased;
+package addressbooktests;
+import addressbook.LastNameOrdered;
+import addressbook.OrderFactory;
+import addressbook.ZipOrdered;
 import junit.framework.TestCase;
 import org.junit.Test;
 
-public class SortOrderFactoryTest extends TestCase{
-    private SortOrderFactory factory;
+public class OrderFactoryTest extends TestCase{
+    private OrderFactory factory;
 
     @Override
     protected void setUp(){
-        factory = SortOrderFactory.getInstance();
+        factory = OrderFactory.getInstance();
     }
 
     @Test
     public void testGetInstance(){
-        SortOrderFactory secondFactory = SortOrderFactory.getInstance();
+        OrderFactory secondFactory = OrderFactory.getInstance();
         assertTrue(factory == secondFactory);
     }
 
     @Test
     public void testGetZipBased(){
         Object object = factory.getOrder("zip");
-        assertTrue(object instanceof ZipBased);
+        assertTrue(object instanceof ZipOrdered);
     }
 
     @Test
     public void testGetLastNameBased(){
         Object object = factory.getOrder("lastname");
-        assertTrue(object instanceof LastNameBased);
+        assertTrue(object instanceof LastNameOrdered);
     }
 
     @Test

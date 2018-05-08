@@ -3,37 +3,68 @@ package addressbook;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Represents an address book that stores contact information.
+ * Contact information is stored using a tree map. The key is composed of
+ * certain pieces of contact information while the value is the full contact
+ * information represented by a Person object. AddressBook supports
+ * adding, removing, sorting, and editing information within the object.
+ * @author Brandon Cole
+ */
+
 public class AddressBook implements Serializable {
+
     /**
-     * Used to represent an address book with entries
-     * stored as a treeSet. Supports basic operations
-     * operations such as add, remove, and sorting by
-     * certain values. Sorts entries by last name initially.
+     *  Holds contact information
      */
     private Map<String, Person> entries;
-    private SortOrder order;
+
+    /**
+     *  Generates a subtype of Ordering interface at runtime
+     */
+    private OrderFactory orderFactory;
+
+    /**
+     *  Defines the order of entries and generates keys based on that order
+     */
+    private Ordering order;
 
     public AddressBook(){
         entries = new TreeMap<>();
-        order = LastNameBased.getInstance();
+        order = LastNameOrdered.getInstance();
+        orderFactory = OrderFactory.getInstance();
     }
 
+    /**
+     * Copies data from another AddressBook object
+     * @param addressBook object of type AddressBook
+     */
     public AddressBook(AddressBook addressBook){
         entries = new TreeMap<>(addressBook.entries);
         order = addressBook.order;
-
+        orderFactory = OrderFactory.getInstance();
     }
 
-    public void add(Person person){
-        String key = order.getKey(person);
-        if (!entries.containsKey(key)){
-            entries.put(key, person);
-        }
+    /**
+     * inserts an entry into the address book entry is not already in the address book.
+     * A key (String) is derived from information from the Person object.
+     * @param person this is an Object of type Person
+     */
+    public void add(Person person)  {
+        entries.putIfAbsent(order.getKey(person), person);
     }
 
+    /**
+     * changes the ordering of entries at runtime
+     * @param criteria String that tells how entries should be ordered.
+     */
     public void sortBy(String criteria) {
-        order = SortOrderFactory.getInstance().getOrder(criteria);
-        order.sort(entries);
+        order = orderFactory.getOrder(criteria);
+        order.order(entries);
+    }
+
+    public Person getPerson(String key){
+        return entries.get(key);
     }
 
     public boolean remove(String key) { return entries.remove(key) != null; }
@@ -50,11 +81,18 @@ public class AddressBook implements Serializable {
 
     public void changeZip(String key, int zipCode) {
         Person person = entries.remove(key);
-        person.setZipCode(zipCode);
-        entries.put(order.getKey(person), person);
+        if (person != null){
+            person.setZipCode(zipCode);
+            entries.put(order.getKey(person), person);
+        }
     }
 
-    public void printAllEntries() { entries.forEach((String key, Person entry) -> System.out.println(entry.toString())); }
+    public void printAllEntries() { entries.forEach((String key, Person entry)
+            -> System.out.println(entry.toString() + "\n")); }
 
-    public Map<String, Person> getEntries(){ return entries; }
+    public AddressBook getClone(){ return new AddressBook(this);}
+
+    public Map<String, Person> getEntries() { return new TreeMap<>(entries); }
+
+    public int size () {return entries.size();}
 }

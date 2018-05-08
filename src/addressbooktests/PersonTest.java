@@ -1,4 +1,4 @@
-package tests;
+package addressbooktests;
 
 import addressbook.Person;
 import junit.framework.TestCase;
