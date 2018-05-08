@@ -1,4 +1,4 @@
-package addressbook;
+package main;
 
 import java.io.Serializable;
 import java.util.*;

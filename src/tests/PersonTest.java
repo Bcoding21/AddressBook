@@ -1,6 +1,6 @@
-package addressbooktests;
+package tests;
 
-import addressbook.Person;
+import main.Person;
 import junit.framework.TestCase;
 import org.junit.Test;
 

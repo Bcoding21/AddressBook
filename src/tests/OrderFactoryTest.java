@@ -1,7 +1,7 @@
-package addressbooktests;
-import addressbook.LastNameOrdered;
-import addressbook.OrderFactory;
-import addressbook.ZipOrdered;
+package tests;
+import main.LastNameOrdered;
+import main.OrderFactory;
+import main.ZipOrdered;
 import junit.framework.TestCase;
 import org.junit.Test;
 

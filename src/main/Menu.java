@@ -1,7 +1,6 @@
-package addressbook;
+package main;
 
 import java.io.*;
-import java.util.Scanner;
 
 public class Menu {
     /**

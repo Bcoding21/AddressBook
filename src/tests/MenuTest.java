@@ -1,8 +1,8 @@
-package addressbooktests;
+package tests;
 
-import addressbook.AddressBook;
-import addressbook.Menu;
-import addressbook.Person;
+import main.AddressBook;
+import main.Menu;
+import main.Person;
 import junit.framework.TestCase;
 import org.junit.Test;
 
