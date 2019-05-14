@@ -1,14 +1,12 @@
 package main;
 
-import java.io.Serializable;
-import java.util.*;
+import java.util.Map;
+import java.util.TreeMap;
 
-
-public class AddressBook implements Serializable {
+public class AddressBook {
 
 	private Map<String, Contact> lastNameIndex;
     private Map<Integer, Contact> zipCodeIndex; 
-
 
     public AddressBook() {
     	lastNameIndex = new TreeMap<>();
@@ -16,11 +14,25 @@ public class AddressBook implements Serializable {
     }
     
     public boolean add(Contact contact) {
-		return false;
+    	Contact contactCopy = new Contact(contact);
+		String lastName = contactCopy.getLastName();
+		contactCopy = lastNameIndex.put(lastName, contactCopy);
+		
+		if (contactCopy == null) {
+			return false;
+		}
+		
+		int zipCode = contact.getZipCode();
+		contactCopy = zipCodeIndex.put(zipCode, contact);
+		return contactCopy == null;
 	}
     
     public boolean remove(Contact contact) {
     	return false;
     }
+    
+    public int getSize() {
+		return lastNameIndex.size();
+	}
 
 }
